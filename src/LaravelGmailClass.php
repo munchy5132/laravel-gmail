@@ -4,6 +4,7 @@ namespace Dacastro4\LaravelGmail;
 
 use Dacastro4\LaravelGmail\Exceptions\AuthException;
 use Dacastro4\LaravelGmail\Services\Message;
+use Dacastro4\LaravelGmail\Services\Thread;
 use Illuminate\Support\Facades\Redirect;
 
 class LaravelGmailClass extends GmailConnection
@@ -16,6 +17,19 @@ class LaravelGmailClass extends GmailConnection
 
 		parent::__construct($config, $userId);
 	}
+
+    /**
+     * @return Thread
+     * @throws AuthException
+     */
+    public function thread()
+    {
+        if (!$this->getToken()) {
+            throw new AuthException('No credentials found.');
+        }
+
+        return new Thread($this);
+    }
 
 	/**
 	 * @return Message
